@@ -30,6 +30,7 @@ $factory->define(User::class, function (Faker $faker) {
 
 $factory->define(Product::class, function (Faker $faker) {
     return [
+        'user_id' => $faker->numberBetween($min=1,$max=3),
         'name' => $faker->name,
         'brand' => $faker->name,
         'body' => $faker->text($maxNbChars=150),

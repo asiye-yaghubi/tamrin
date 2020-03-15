@@ -25,4 +25,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['namespace'=>'Admin','middleware'=>['auth'],'prefix'=>'admin'],function(){
 
     Route::resource('product','ProductController');
+    Route::resource('role','RoleController');
+    Route::resource('user','UserController');
+    Route::resource('permition','PermitionController');
+    Route::resource('category','CategoryController');
+
+
+
 });

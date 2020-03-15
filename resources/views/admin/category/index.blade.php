@@ -2,14 +2,14 @@
 @extends('layouts.admin')
 
 @section('titr')
-<li class="active">محصولات</li>
+<li class="active"> دسته ها</li>
 @stop
 
 
 @section('content')
     <!-- Main content -->
     <section class="content">
-        @if(session()->has('editeproduct'))
+        @if(session()->has('editecategory'))
         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-success">
             یک پیام دارید
           </button>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="modal-body">
                   <p>        
-                      {{ session('editeproduct')}}
+                      {{ session('editecategory')}}
                 </p>
                 </div>
                 <div class="modal-footer">
@@ -40,7 +40,7 @@
         @endif
 <br>
 
-        <a class="btn btn-app bg-green" href="{{ Route('product.create') }}">
+        <a class="btn btn-app bg-green" href="{{ Route('category.create') }}">
             <i class="fa fa-save "></i> افزودن
           </a>
 
@@ -48,7 +48,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">لیست محصولات وب سایت </h3>
+              <h3 class="box-title">لیست  دسترسی های وب سایت </h3>
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -64,36 +64,32 @@
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">
                 <tbody><tr>
-                  <th>شماره</th>
-                  <th>نام محصول</th>
-                  <th>قیمت </th>
-                  <th>برند</th>
-                  <th>تخفیف</th>
-                  <th>وضعیت</th>
-                  <th>تصویر</th>
+                  <th>ردیف</th>
+                  <th>نام  انگلیسی</th>
+                  <th>نام  دسته بندی </th>
                   <th>ویرایش</th>
                   <th>حذف</th>
 
                 </tr>
 
-              @foreach($products as $product)
+              @foreach($categories as $category)
                 <tr>
-                  <td>{{ $product->id }}</td>
-                  <td><a href="{{ route('product.show',['product'=>$product->id]) }}">{{ $product->name }}</a></td>
-                  <td>{{ number_format($product->price) }}</td>
-                  <td>{{ $product->brand }}</td>
-                  <td>{{ $product->discount }}</td>
-                  <td><span class="label label-success">{{ $product->status }}</span></td>
-                  <td><img src="{{ $product->image }}" style="max-width:60px;max-height:60px;height: auto;float: right;" ></td>
+                  <td>{{ $category->id }}</td>
+                  <td><a href="{{ route('category.show',['category'=>$category->id]) }}">{{ $category->title }}</a></td>
+                  
+                  <td>{{ $category->title_persian }}</td>
+                  <td><img src="{{ $category->image }}" style="max-width:60px;max-height:60px;height: auto;float: right;" alt=""></td>
+
+                  
                     <!-------------sath dastresi ------------------>
-                    @can('view',$product)
+                    {{-- @can('view',$category) --}}
                   <td>
-                    <a class="btn btn-app bg-blue" href="{{ route('product.edit',['product'=>$product->id]) }}" >
+                    <a class="btn btn-app bg-blue" href="{{ route('category.edit',['category'=>$category->id]) }}" >
                     <i class="fa fa-edit"></i> ویرایش
                     </a>
                   </td>
                   <td>
-                    <form action="{{ Route('product.destroy',['product'=>$product->id]) }}" method="post">
+                    <form action="{{ Route('category.destroy',['category'=>$category->id]) }}" method="post">
                       {{ csrf_field() }}
                       {{ method_field('delete')}}
                     <button type="submit" class="btn btn-app bg-red" >
@@ -101,23 +97,23 @@
                     </button>
                   </form>   
                   </td>
-                    @endcan
-                    @cannot('view',$product)
-                    <td>
-                    <a class="btn btn-app bg-blue" href="{{ route('product.edit',['product'=>$product->id]) }}" disabled>
+                    {{-- @endcan --}}
+                    {{-- @cannot('view',$category) --}}
+                    {{-- <td>
+                    <a class="btn btn-app bg-blue" href="{{ route('category.edit',['category'=>$category->id]) }}" disabled>
                       <i class="fa fa-edit"></i> ویرایش
                       </a>
                     </td>
                     <td>
-                      <form action="{{ Route('product.destroy',['product'=>$product->id]) }}" method="post">
+                      <form action="{{ Route('category.destroy',['category'=>$category->id]) }}" method="post">
                         {{ csrf_field() }}
                         {{ method_field('delete')}}
                       <button type="submit" class="btn btn-app bg-red" disabled>
                           <i class="fa fa-trash"></i> حذف
                       </button>
                     </form>   
-                    </td>  
-                    @endcannot
+                    </td>   --}}
+                    {{-- @endcannot --}}
                   
                     
                 </tr>
@@ -127,7 +123,7 @@
             </div>
 
             <!-- /.box-body -->
-          {{ $products->links() }}
+          {{ $categories->links() }}
           </div>
           <!-- /.box -->
         </div>

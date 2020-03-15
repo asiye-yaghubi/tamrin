@@ -8,6 +8,10 @@ use Intervention\Image\Facades\Image;
 
 class AdminController extends Controller
 {
+    public function __construct()
+    {
+        // auth()->loginUsingId(1);
+    }
 
     public function ImageUploader($file,$path)
     {
@@ -25,6 +29,19 @@ class AdminController extends Controller
         });
 
         $img->save($mainpath."small-".$filename);
+
+        return $databasename.$filename;
+    }
+
+
+
+    //=====without resize image===================
+    public function ImageUploader1($file,$path)
+    {
+        $filename = time().'.'.$file->getClientOriginalExtension();
+        $databasename = '/uploads/'.$path;
+        $mainpath = public_path($databasename);
+        $file->move($mainpath,$filename);
 
         return $databasename.$filename;
     }

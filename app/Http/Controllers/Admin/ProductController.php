@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Category;
 use App\Http\Controllers\Controller;
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
+
+
 
 class ProductController extends AdminController
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -31,8 +32,9 @@ class ProductController extends AdminController
      */
     public function create()
     {
+        $categorys = Category::where('chid','!=0',0)->get();
         $brands = Product::pluck('brand');
-        return view('admin.product.create',compact('brands'));
+        return view('admin.product.create',compact('brands','categorys'));
     }
 
     /**
@@ -52,7 +54,9 @@ class ProductController extends AdminController
             'discount' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg',
             'body' => 'required',
-            'status' => 'required',
+            // 'status' => 'required',
+            'category' => 'required',
+            'count' => 'required',
 
         ]);
         $file = $request['image'];
@@ -61,7 +65,7 @@ class ProductController extends AdminController
 
         //'image' => 'required|image|mimes:jpeg,png,jpg|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000',
     
-
+        $user_id = auth()->user()->id;
         Product::create([
             'name' => $request['name'],
             'price' => $request['price'],
@@ -70,9 +74,13 @@ class ProductController extends AdminController
             'discount' => $request['discount'],
             'brand' => $request['brand'],
             'image' => $image,
+            'category' => $request['category'],
+            'count' => $request['count'],
+            'user_id' => $user_id,
+
         ]);
         session()->flash('editeproduct','ذخیره محصول انجام شد');
-        return redirect('product');
+        return redirect(route('product.index'));
     }
 
     /**
@@ -81,9 +89,9 @@ class ProductController extends AdminController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-       
+       return view('admin.product.show',compact('product'));
     }
 
     /**
@@ -94,8 +102,17 @@ class ProductController extends AdminController
      */
     public function edit(Product $product)
     {
-        $brands = Product::pluck('brand');
+        if(Gate::allows('view',$product)){
+            $brands = Product::pluck('brand');
         return view('admin.product.edite',compact('product','brands'));
+        }
+        else{
+            session()->flash('permition',"شمااجازه دسترسی به این بخش راندارید");
+            return view('errors.101');
+            
+        }
+
+        
     }
 
     /**

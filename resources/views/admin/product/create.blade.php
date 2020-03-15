@@ -76,7 +76,35 @@
                       <input type="text" class="form-control" id="inputprice" name="price" value="{{ old('price') }}">
                     </div>
                   </div>
-
+                  @if($errors->has('price'))
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-success">
+                   مشاهده خطا
+                  </button>
+                  <div class="modal modal-danger fade" id="modal-success">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title"> خطا</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>        
+                              {{ $errors->first('price')}}
+                        </p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">خروج</button>
+                          {{-- <button type="button" class="btn btn-outline">ذخیره</button> --}}
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
+                  <!-- /.modal -->
+               
+                @endif
                 
 
                   <div class="form-group">
@@ -127,17 +155,52 @@
                   </div>
 
 
-                 
-
                   <div class="form-group">
-                    <label for="selectbox" class="col-sm-2 control-label">وضعیت</label>
+                    <label for="inputprice" class="col-sm-2 control-label"> تعدادموجودی</label>
   
                     <div class="col-sm-10">
-                    <select class="form-control" id="selectbox" name="status">
-                      <option value="0">0</option>
-                      <option value="1">1</option>
+                      <input type="text" class="form-control" id="inputprice" name="count" value="{{ old('count') }}">
+                    </div>
+                  </div>
+                  @if($errors->has('count'))
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-success">
+                   مشاهده خطا
+                  </button>
+                  <div class="modal modal-danger fade" id="modal-success">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span></button>
+                          <h4 class="modal-title"> خطا</h4>
+                        </div>
+                        <div class="modal-body">
+                          <p>        
+                              {{ $errors->first('count')}}
+                        </p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">خروج</button>
+                          {{-- <button type="button" class="btn btn-outline">ذخیره</button> --}}
+                        </div>
+                      </div>
+                      <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                  </div>
+                  <!-- /.modal -->
+               
+                @endif
+              </div>
 
-                    </select>
+              
+
+                  <div class="form-group">
+                    <label for="selectbox" class="col-sm-2 control-label"> وضعیت محصول</label>
+  
+                    <div class="col-sm-10">
+                    <input type="checkbox" id="selectbox" value="1" checked name="status">موجود
+                     
                     </div>
                     @if($errors->has('status'))
                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-success">
@@ -169,6 +232,11 @@
                  
                   @endif
                   </div>
+
+
+                  
+
+
 
                   <div class="form-group">
                     <label for="selectbox" class="col-sm-2 control-label">برندمحصول</label>
@@ -211,6 +279,50 @@
                  
                   @endif
                   </div>
+
+
+                  <div class="form-group">
+                    <label for="selectbox" class="col-sm-2 control-label">دسته بندی</label>
+  
+                    <div class="col-sm-10">
+                    <select class="form-control" id="selectbox" name="category">
+                      @foreach ($categorys as $category)
+                          
+                      <option value="{{ $category->id }}">{{ $category->title_persian }}</option>
+                      @endforeach
+                    </select>
+                    </div>
+                    @if($errors->has('category'))
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-success">
+                     مشاهده خطا
+                    </button>
+                    <div class="modal modal-danger fade" id="modal-success">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title"> خطا</h4>
+                          </div>
+                          <div class="modal-body">
+                            <p>        
+                                {{ $errors->first('category')}}
+                          </p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">خروج</button>
+                            {{-- <button type="button" class="btn btn-outline">ذخیره</button> --}}
+                          </div>
+                        </div>
+                        <!-- /.modal-content -->
+                      </div>
+                      <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal -->
+                 
+                  @endif
+                  </div>
+
 
                   <div class="form-group">
                     <label for="inputimage" class="col-sm-2 control-label"> تصویر</label>
