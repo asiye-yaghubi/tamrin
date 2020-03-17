@@ -13,23 +13,52 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', 'IndexController@index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+//===========social google==============
+Route::get('login/google', 'Auth\LoginController@redirectToProvider');
+Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
 
-//============admin route===============================================================
-Route::group(['namespace'=>'Admin','middleware'=>['auth'],'prefix'=>'admin'],function(){
+
+
+
+//====================================admin route===================================================
+Route::group(['namespace'=>'Admin','middleware'=>['auth','UserLevel'],'prefix'=>'admin'],function(){
+// Route::group(['namespace'=>'Admin','prefix'=>'admin'],function(){
+
+    Route::get('gallery/{id}','ProductController@gallery');
+    Route::post('product/upload','ProductController@upload');
+
 
     Route::resource('product','ProductController');
     Route::resource('role','RoleController');
     Route::resource('user','UserController');
     Route::resource('permition','PermitionController');
     Route::resource('category','CategoryController');
+    Route::resource('slider','SliderController');
+    Route::resource('filter','FilterController');
 
 
+});
 
+Route::group(['middleware'=>['auth','UserLevel']],function()
+{
+    Route::get('/home','HomeController@index')->name('home');
+});
+
+Route::get('/userpanel', 'HomeController@userpanel');
+
+//===================route default page ===================
+
+
+Route::resource('category','CategoryController');
+
+Route::group([],function()
+{
+    // Route::get('/basketme','BasketController@index')->middleware('auth');
+    //==========ajax route ================
+    Route::resource('basket','BasketController');
 });

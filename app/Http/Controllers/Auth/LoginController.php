@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Socialite;
 
 class LoginController extends Controller
 {
@@ -36,5 +38,25 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+    public function redirectToProvider()
+    {
+        return Socialite::driver('google')->redirect();
+
+    }
+    public function handleProviderCallback()
+    {
+        $google_user = Socialite::driver('google')->user();
+        $user = User::whereEmail($google_user->getEmail())->first();
+        if(!$user){
+            $user = User::create([
+                'name' => $google_user->getName(),
+                'email' => $google_user->getEmail(),
+                'password' =>bcrypt( $google_user->getId()),
+            ]);
+        }
+        auth()->loginUsingId($user->id);
+        return redirect('/home');
+       
     }
 }

@@ -71,6 +71,7 @@
                   <th>تخفیف</th>
                   <th>وضعیت</th>
                   <th>تصویر</th>
+                  <th>گالری تصاویر</th>
                   <th>ویرایش</th>
                   <th>حذف</th>
 
@@ -84,7 +85,12 @@
                   <td>{{ $product->brand }}</td>
                   <td>{{ $product->discount }}</td>
                   <td><span class="label label-success">{{ $product->status }}</span></td>
-                  <td><img src="{{ $product->image }}" style="max-width:60px;max-height:60px;height: auto;float: right;" ></td>
+                  <td><img src="/{{ $product->image }}" style="max-width:60px;max-height:60px;height: auto;float: right;" ></td>
+                  <td>
+                    <a class="btn btn-app bg-blue" href="{{url('admin/gallery/'.$product->id)}}" >
+                    <i class="fa fa-info-circle"></i> گالری تصاویر
+                    </a>
+                  </td>
                     <!-------------sath dastresi ------------------>
                     @can('view',$product)
                   <td>

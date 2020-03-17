@@ -2,7 +2,10 @@
 <html>
 
 <!-- head ----- -->
+<head>
 @include('layouts.head')
+@yield('script')
+</head>
 <!-- head ----- -->
 
 <body class="hold-transition skin-blue sidebar-mini">

@@ -58,6 +58,7 @@
         </button> --}}
 
         <input type="submit" class="login pull-right" value="ورود">
+        <a href="{{ url('login/google') }}"  class="login pull-right btn">ورود بااکانت گوگل</a>
         <div class="clear-fix"></div>
         </form>
 		</div>

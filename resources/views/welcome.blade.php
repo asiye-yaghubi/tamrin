@@ -1,100 +1,105 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layout-default.master-default')
+@section('slider')
+<!-- Slideshow Start-->
+<div class="slideshow single-slider owl-carousel">
+    @foreach ($slider as $val)
+    <div class="item"> <a href="{{ $val->url }}"><img class="img-responsive" src="{{ $val->image }}" alt="banner 1" /></a> </div>
+        
+    @endforeach
+  </div>
+  <!-- Slideshow End-->
+  @stop
 
-        <title>Laravel</title>
+  @section('content')
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
-            </div>
+   <!-- Featured محصولات Start-->
+    <h3 class="subtitle">ویژه</h3>
+    <div class="owl-carousel product_carousel">
+     
+    @foreach ($best as $pro)
+        
+   
+      <div class="product-thumb clearfix">
+        <div class="image"><a href=""><img src="/{{ $pro->image }}" alt="{{ $pro->name }}" title="" class="img-responsive" /></a></div>
+        <div class="caption">
+          <h4><a href="product.html">{{ $pro->name }}</a></h4>
+          <p class="price"> <span class="price-new"><?php 
+            $a=100-$pro->discount;
+            $newPrice=($pro->price/100)*$a;
+            ?>
+            {{ number_format($newPrice) }}تومان</span> تومان</span> 
+            <span class="price-old">{{ number_format($pro->price) }} تومان</span> 
+            <span class="saving">-{{ $pro->discount}}%</span> </p>
         </div>
-    </body>
-</html>
+        <div class="button-group">
+          <button class="btn-primary add-to-cart" type="button" onClick="" data-id={{ $pro->id }}><span>افزودن به سبد</span></button>
+          <div class="add-to-links">
+            <button type="button" data-toggle="tooltip" title="Add to Wish List" onClick=""><i class="fa fa-heart"></i></button>
+            <button type="button" data-toggle="tooltip" title="مقایسه this محصولات" onClick=""><i class="fa fa-exchange"></i></button>
+          </div>
+        </div>
+      </div>
+      @endforeach
+      <script>
+        $(document).ready(function(){
+          $.ajaxSetup({
+          headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+        $('.add-to-cart').on('click',function(){
+          var id = $(this).attr('data-id');
+          $.ajax({
+            url:'/basket',
+            type:'post',
+            dataType:'json',
+            data:{id:id},
+            success:function(data){
+              if(data.basket_create=='success'){
+                alert('محصول موردنظرباموفقیت به سبدخریدافزوده شد');
+              }
+              else if(data.count=='exceeded'){
+                alert('تعدادمحصولات انتخاب شده بیش ازموجودی انباراست');
+              }
+            }
+            
+          });
+        });
+      });
+      </script>
+
+    </div>
+
+
+    <!-- tecnolojy محصولات Start-->
+    <h3 class="subtitle">تکنولوژی</h3>
+    <div class="owl-carousel product_carousel">
+     
+    @foreach ($tecnolojy as $pro)
+        
+   
+      <div class="product-thumb clearfix">
+        <div class="image"><a href="product.html"><img src="{{ $pro->image }}" alt="{{ $pro->name }}" title="" class="img-responsive" /></a></div>
+        <div class="caption">
+          <h4><a href="product.html">{{ $pro->name }}</a></h4>
+          <p class="price"> <span class="price-new"><?php 
+            $a=100-$pro->discount;
+            $newPrice=($pro->price/100)*$a;
+            ?>
+            {{ number_format($newPrice) }}تومان</span> تومان</span> 
+            <span class="price-old">{{ number_format($pro->price) }} تومان</span> 
+            <span class="saving">-{{ $pro->discount}}%</span> </p>
+        </div>
+        <div class="button-group">
+          <button class="btn-primary" type="button" onClick=""><span>افزودن به سبد</span></button>
+          <div class="add-to-links">
+            <button type="button" data-toggle="tooltip" title="Add to Wish List" onClick=""><i class="fa fa-heart"></i></button>
+            <button type="button" data-toggle="tooltip" title="مقایسه this محصولات" onClick=""><i class="fa fa-exchange"></i></button>
+          </div>
+        </div>
+      </div>
+      @endforeach
+
+    </div>
+
+  @stop

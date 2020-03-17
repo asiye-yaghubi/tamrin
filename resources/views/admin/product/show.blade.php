@@ -42,7 +42,7 @@
                   </tr> 
                   <tr>
                     <th>تصویر</th>
-                    <td><img src="{{ $product->image }}" alt=""></td>
+                    <td><img src="/{{ $product->image }}" alt=""></td>
                   </tr>
               </tbody></table>
             </div>

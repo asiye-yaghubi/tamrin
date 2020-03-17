@@ -25,23 +25,8 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">منو</li>
-       
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-barcode"></i>
-            <span>مدیریت محصولات</span>
-            
-          </a>
-          <ul class="treeview-menu" id="product">
-            @can('product_list')
-          <li>  <a href="{{route('product.index')}}"><span class="fa fa-circle-o"></span>لیست محصولات</a></li>
-          @endcan
-          @can('product_add')
-          <li>  <a href="{{ route('product.create') }}"><span class="fa fa-circle-o"></span>  افزودن محصول جدید </a></li>
-            @endcan
-            
-          </ul>
-        </li>
+
+        @if(auth()->user()->level=='admin')
         <li class="treeview">
           <a href="#">
             <i class="fa fa-user"></i>
@@ -69,6 +54,25 @@
           @endcan
           </ul>
         </li>
+       
+       
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-barcode"></i>
+            <span>مدیریت محصولات</span>
+            
+          </a>
+          <ul class="treeview-menu" id="product">
+            @can('product_list')
+          <li>  <a href="{{route('product.index')}}"><span class="fa fa-circle-o"></span>لیست محصولات</a></li>
+          @endcan
+          @can('product_add')
+          <li>  <a href="{{ route('product.create') }}"><span class="fa fa-circle-o"></span>  افزودن محصول جدید </a></li>
+            @endcan
+            
+          </ul>
+        </li>
+        
 
        
         <li class="treeview">
@@ -86,8 +90,45 @@
             @endcan
             
           </ul>
+        </li>
+
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-barcode"></i>
+            <span>مدیریت اسلایدشو</span>
+            
+          </a>
+          <ul class="treeview-menu" id="product">
+            @can('slider_list')
+          <li>  <a href="{{route('slider.index')}}"><span class="fa fa-circle-o"></span>لیست  اسلاید ها</a></li>
+          @endcan
+          @can('slider_add')
+          <li>  <a href="{{ route('slider.create') }}"><span class="fa fa-circle-o"></span>  افزودن  اسلاید جدید </a></li>
+            @endcan
+            
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-barcode"></i>
+            <span>مدیریت  فیلترها</span>
+            
+          </a>
+          <ul class="treeview-menu" id="product">
+            @can('filter_list')
+          <li>  <a href="{{route('filter.index')}}"><span class="fa fa-circle-o"></span>لیست  فیلتر ها</a></li>
+          @endcan
+          @can('filter_add')
+          <li>  <a href="{{ route('filter.create') }}"><span class="fa fa-circle-o"></span>  افزودن  فیلتر جدید </a></li>
+            @endcan
+            
+          </ul>
+        </li>
+
        
-    
+        @endif
           
         </ul>
     </section>

@@ -43,16 +43,23 @@
         <a class="btn btn-app bg-green" href="{{ Route('category.create') }}">
             <i class="fa fa-save "></i> افزودن
           </a>
+<form action="">
+  <input type="text" name="title" placeholder="انگلیسی">
+  <input type="text" name="title_persian" placeholder="فارسی">
 
+  <input type="submit" value="جستجو">
+</form>
     <div class="row">
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
               <h3 class="box-title">لیست  دسترسی های وب سایت </h3>
-
+          
+              {{-- <form action="" style="float:left"> --}}
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="جستجو">
+                 
+                  <input type="text" name="search" class="form-control pull-right" placeholder="جستجو">
 
                   <div class="input-group-btn">
                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
@@ -60,6 +67,7 @@
                 </div>
               </div>
             </div>
+          {{-- </form> --}}
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
               <table class="table table-hover">

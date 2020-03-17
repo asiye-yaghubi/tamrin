@@ -13,9 +13,9 @@ class CategoryController extends AdminController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::latest()->paginate(20);
+        $categories = Category::search($request->all());
         return view('admin.category.index',compact('categories'));
     }
 
@@ -97,15 +97,23 @@ class CategoryController extends AdminController
          $this->validate(request(),[
             'title' => 'required',
             'title_persian' => 'required',
-            'image' => 'required',
+            // 'image' => 'required',
         ]);
-        $file = $request['image'];
-        $path = 'categorys/';
-        $image = $this->ImageUploader($file,$path);
+        if($request['image'])
+        {
+            unlink($category->image) or die('Delete Error');
+            $file = $request['image'];
+            $path = 'categorys/';
+            $image = $this->ImageUploader($file,$path);
+        }
+        else
+        {
+            $image = $category->image;
+        }
 
-        $category->image = $image;
         $data = $request->all();    
-        $category->update();
+        $data['image'] = $image;
+        $category->update($data);
 
         session()->flash('editecategory','تغییرات  دسته بندی انجام شد');
         return redirect(route('category.index'));
@@ -119,6 +127,7 @@ class CategoryController extends AdminController
      */
     public function destroy(Category $category)
     {
+        unlink($category->image) or die('Delete Error');
         $category->delete();
         session()->flash('editecategory','  دسته بندی حذف شد');
         return redirect()->back();

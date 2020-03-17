@@ -223,7 +223,7 @@
                     <label for="inputEmail3" class="col-sm-2 control-label"> تصویر</label>
   
                     <div class="col-sm-10">
-                      <img id="inputEmail3" src="{{ $product->image }}" style="max-width:60px;max-height:60px;height: auto;float: right;">
+                      <img id="inputEmail3" src="/{{ $product->image }}" style="max-width:60px;max-height:60px;height: auto;float: right;">
                       <input type="file" class="form-control" id="inputEmail3" name="image">
 
                       @if($errors->has('image'))

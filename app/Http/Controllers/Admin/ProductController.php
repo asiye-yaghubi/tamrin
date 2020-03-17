@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -130,22 +131,32 @@ class ProductController extends AdminController
             'price' => 'required',
             'brand' => 'required',
             'discount' => 'required',
-            'image' => 'image',
+            // 'image' => 'image',
             'body' => 'required',
             'status' => 'required',
 
         ]);
 
 //================upload image =============
-        $file = $request['image'];
-        $path = 'products/';
-        $image = $this->ImageUploader($file,$path);
+        if($request['image'])
+        {
+            unlink($product->image) or die('Delete Error');
+            $file = $request['image'];
+            $path = 'products/';
+            $image = $this->ImageUploader($file,$path);
+        }
+        else
+        {
+            $image = $product->image;
+        }
+       
 
+        $data = $request->all();    
+        $data['image'] = $image;
+        $product->update($data);
 
-        $product->image = $image;
-        $product->update();
         session()->flash('editeproduct','تغییرات محصول انجام شد');
-        return redirect('product');
+        return redirect(route('product.index'));
     }
 
     /**
@@ -156,8 +167,29 @@ class ProductController extends AdminController
      */
     public function destroy(Product $product)
     {
+        unlink($product->image) or die('Delete Error');
         $product->delete();
         session()->flash('editeproduct',' محصول حذف شد');
         return redirect()->back();
+    }
+
+    public function gallery($id)
+    {
+            // $id=$request->get('id');
+            $product = Product::findOrfail($id);
+            return view('/admin/product/gallery',compact('product'));
+    }
+    public function upload(Request $request)
+    {
+        $id = $request->get('id');
+        $files = $request->file('file');
+        $name = rand()."-".$id.'.'.$files->getClientOriginalExtension();
+        if($files->move('uploads/gallery',$name))
+        {
+            $ProductImage = new ProductImage();
+            $ProductImage->product_id = $id;
+            $ProductImage->url = $name;
+            $ProductImage->save();
+        }
     }
 }
